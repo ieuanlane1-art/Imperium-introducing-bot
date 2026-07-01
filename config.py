@@ -9,14 +9,20 @@ WELCOME_DELETE_TIME = 120
 REMINDER_TIME = 300
 
 IBS = [
-    {
-        "name": "Ieuan",
-        "username": "IeuanFX_ITA"
-    },
-    {
-        "name": "Bevs",
-        "username": "BevsFX"
-    }
+    {"name": "Ieuan", "username": "IeuanFX_ITA"},
+    {"name": "Lewis Turrell", "username": "lturrell"},
+    {"name": "Uuvs0ap", "username": "Uuvs0ap"},
+    {"name": "Tommy FX", "username": "tommyyyyfx"},
+    {"name": "Imperium Trading Group", "username": "ImperiumTradingGroupLTD"},
+    {"name": "Alex", "username": "Fxwithalexf1"},
+    {"name": "Shaun", "username": "Shaunb1996"},
+    {"name": "Harley", "username": "harleyd10"},
+    {"name": "Tommy Voice", "username": "tommyvoice"},
+    {"name": "Lew", "username": "Lew6FX"},
+    {"name": "Iestyn", "username": "iestynjohns"},
+    {"name": "Jack", "username": "JACK_ITAA"},
+    {"name": "CST", "username": "cst071"},
+    {"name": "Brandan", "username": "Brandan32"}
 ]
 
 PREFILLED_MESSAGE = (
