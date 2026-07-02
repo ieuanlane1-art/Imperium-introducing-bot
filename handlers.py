@@ -144,33 +144,33 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=open_ib_chat_keyboard(assigned_ib_username)
     )
 
-    try:
-    client_name = lead[3] or lead[2] or "New client"
-    client_username = lead[2]
+        try:
+            client_name = lead[3] or lead[2] or "New client"
+            client_username = lead[2]
 
-    if client_username:
-        client_link = f"https://t.me/{client_username}"
-    else:
-        client_link = f"tg://user?id={lead[1]}"
+            if client_username:
+                client_link = f"https://t.me/{client_username}"
+            else:
+                client_link = f"tg://user?id={lead[1]}"
 
-    await context.bot.send_message(
-        chat_id=f"@{assigned_ib_username}",
-        text=(
-            "🔔 NEW IMPERIUM CLIENT\n\n"
-            f"Your new client {client_name} is ready to join the team.\n\n"
-            "Message them now and get them set up."
-        ),
-        reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    "💬 Message Client",
-                    url=client_link
-                )
-            ]
-        ])
-    )
-except Exception as e:
-    logger.info(f"Could not notify IB: {e}")
+            await context.bot.send_message(
+                chat_id=f"@{assigned_ib_username}",
+                text=(
+                    "🔔 NEW IMPERIUM CLIENT\n\n"
+                    f"Your new client {client_name} is ready to join the team.\n\n"
+                    "Message them now and get them set up."
+                ),
+                reply_markup=InlineKeyboardMarkup([
+                    [
+                        InlineKeyboardButton(
+                            "💬 Message Client",
+                            url=client_link
+                        )
+                    ]
+            ])
+        )
+    except Exception as e:
+        logger.info(f"Could not notify IB: {e}")
     
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
