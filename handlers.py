@@ -159,7 +159,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"👤 Client: {client_name}\n"
                 f"📱 Username: {username_text}\n\n"
                 f"👔 Assigned IB: @{assigned_ib_username}\n\n"
-                "Tap below to message your client."."
+                "Tap below to message your client."
             ),
             reply_markup=InlineKeyboardMarkup(
                 [
