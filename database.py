@@ -200,3 +200,23 @@ def get_dashboard_stats():
         "month": month,
         "top_ibs": top_ibs,
     }
+    
+def save_dashboard_message(chat_id, topic_id, message_id):
+    set_setting("dashboard_chat_id", str(chat_id))
+    set_setting("dashboard_topic_id", str(topic_id))
+    set_setting("dashboard_message_id", str(message_id))
+
+
+def get_dashboard_message():
+    chat_id = get_setting("dashboard_chat_id", None)
+    topic_id = get_setting("dashboard_topic_id", None)
+    message_id = get_setting("dashboard_message_id", None)
+
+    if not chat_id or not topic_id or not message_id:
+        return None
+
+    return {
+        "chat_id": int(chat_id),
+        "topic_id": int(topic_id),
+        "message_id": int(message_id),
+    }
