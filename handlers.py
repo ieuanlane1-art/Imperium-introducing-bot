@@ -18,6 +18,7 @@ from database import (
     get_total_leads,
     get_leads_by_ib,
     get_clicked_leads,
+    get_dashboard_stats
 )
 from keyboards import start_journey_keyboard, open_ib_chat_keyboard
 from lead_manager import assign_next_ib
@@ -200,18 +201,32 @@ async def chatid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    total = get_total_leads()
-    clicked = get_clicked_leads()
-    by_ib = get_leads_by_ib()
+    stats = get_dashboard_stats()
+
+    total = stats["total"]
+    clicked = stats["clicked"]
+
+    conversion = 0
+    if total > 0:
+        conversion = round((clicked / total) * 100, 1)
 
     message = (
-        "📊 Imperium Bot Stats\n\n"
-        f"Total leads: {total}\n"
-        f"Clicked Get Started: {clicked}\n\n"
-        "Leads by IB:\n"
+        "📊 IMPERIUM DASHBOARD\n\n"
+        f"📅 Today's Leads: {stats['today']}\n"
+        f"📆 This Week: {stats['week']}\n"
+        f"🗓️ This Month: {stats['month']}\n\n"
+        f"🚀 Started Setup: {clicked}/{total}\n"
+        f"📈 Conversion Rate: {conversion}%\n\n"
+        "🏆 TOP IBs\n"
     )
 
-    for ib_username, count in by_ib:
-        message += f"@{ib_username}: {count}\n"
+    medals = ["🥇", "🥈", "🥉"]
+
+    if stats["top_ibs"]:
+        for i, (ib_username, count) in enumerate(stats["top_ibs"]):
+            if i < len(medals):
+                message += f"{medals[i]} @{ib_username} — {count} leads\n"
+    else:
+        message += "No leads yet."
 
     await update.message.reply_text(message)
