@@ -14,6 +14,7 @@ from handlers import (
     start_command,
     help_command,
     chatid_command,
+    stats_command,
     welcome_new_member,
     button_handler,
 )
@@ -36,7 +37,7 @@ def main():
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("chatid", chatid_command))
-
+    app.add_handler(CommandHandler("stats", stats_command))
     app.add_handler(
         MessageHandler(
             filters.StatusUpdate.NEW_CHAT_MEMBERS,
