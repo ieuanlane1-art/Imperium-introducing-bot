@@ -10,7 +10,15 @@ from config import (
     IB_NOTIFY_CHAT_ID,
     IB_NOTIFY_TOPIC_ID,
 )
-from database import create_lead, get_lead, mark_clicked, mark_reminder_sent
+from database import (
+    create_lead,
+    get_lead,
+    mark_clicked,
+    mark_reminder_sent,
+    get_total_leads,
+    get_leads_by_ib,
+    get_clicked_leads,
+)
 from keyboards import start_journey_keyboard, open_ib_chat_keyboard
 from lead_manager import assign_next_ib
 
@@ -190,3 +198,20 @@ async def chatid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"Chat ID:\n{chat_id}\n\nTopic ID:\n{topic_id}"
     )
+    
+async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    total = get_total_leads()
+    clicked = get_clicked_leads()
+    by_ib = get_leads_by_ib()
+
+    message = (
+        "📊 Imperium Bot Stats\n\n"
+        f"Total leads: {total}\n"
+        f"Clicked Get Started: {clicked}\n\n"
+        "Leads by IB:\n"
+    )
+
+    for ib_username, count in by_ib:
+        message += f"@{ib_username}: {count}\n"
+
+    await update.message.reply_text(message)
