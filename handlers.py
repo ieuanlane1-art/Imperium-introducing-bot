@@ -220,3 +220,26 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await update.message.reply_text(message)
+    
+def build_dashboard_text():
+    stats = get_dashboard_stats()
+
+    total = stats["total"]
+    clicked = stats["clicked"]
+
+    conversion = 0
+    if total > 0:
+        conversion = round((clicked / total) * 100, 1)
+
+    return (
+        "📊 LIVE IMPERIUM DASHBOARD\n\n"
+        f"📅 Today's Leads: {stats['today']}\n"
+        f"📆 This Week: {stats['week']}\n"
+        f"🗓️ This Month: {stats['month']}\n\n"
+        f"🚀 Started Setup: {clicked}/{total}\n"
+        f"📈 Conversion Rate: {conversion}%"
+    )
+
+
+async def dashboard_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(build_dashboard_text())
