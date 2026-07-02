@@ -170,7 +170,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ])
         )
     except Exception as e:
-        logger.info(f"Could not notify IB: {e}")
+         logger.info(f"Could not notify IB: {e}")
     
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
