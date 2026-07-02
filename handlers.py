@@ -18,7 +18,9 @@ from database import (
     get_total_leads,
     get_leads_by_ib,
     get_clicked_leads,
-    get_dashboard_stats
+    get_dashboard_stats,
+    set_setting,
+    get_setting,
 )
 from keyboards import start_journey_keyboard, open_ib_chat_keyboard
 from lead_manager import assign_next_ib
@@ -242,4 +244,19 @@ def build_dashboard_text():
 
 
 async def dashboard_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(build_dashboard_text())
+    message = await update.message.reply_text(build_dashboard_text())
+
+    set_setting("dashboard_chat_id", update.effective_chat.id)
+    set_setting("dashboard_message_id", message.message_id)
+
+    if update.message.message_thread_id:
+        set_setting("dashboard_topic_id", update.message.message_thread_id)
+
+    try:
+        await context.bot.pin_chat_message(
+            chat_id=update.effective_chat.id,
+            message_id=message.message_id,
+            disable_notification=True,
+        )
+    except Exception as e:
+        logger.info(f"Could not pin dashboard: {e}")
