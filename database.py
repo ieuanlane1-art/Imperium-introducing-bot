@@ -115,3 +115,41 @@ def set_setting(key, value):
 
     conn.commit()
     conn.close()
+    
+    def get_total_leads():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM leads")
+    total = cursor.fetchone()[0]
+
+    conn.close()
+    return total
+
+
+def get_leads_by_ib():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT assigned_ib_username, COUNT(*) 
+        FROM leads 
+        GROUP BY assigned_ib_username
+        ORDER BY COUNT(*) DESC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
+
+def get_clicked_leads():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM leads WHERE clicked = 1")
+    clicked = cursor.fetchone()[0]
+
+    conn.close()
+    return clicked
