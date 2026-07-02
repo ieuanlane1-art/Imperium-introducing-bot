@@ -216,17 +216,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📆 This Week: {stats['week']}\n"
         f"🗓️ This Month: {stats['month']}\n\n"
         f"🚀 Started Setup: {clicked}/{total}\n"
-        f"📈 Conversion Rate: {conversion}%\n\n"
-        "🏆 TOP IBs\n"
+        f"📈 Conversion Rate: {conversion}%"
     )
-
-    medals = ["🥇", "🥈", "🥉"]
-
-    if stats["top_ibs"]:
-        for i, (ib_username, count) in enumerate(stats["top_ibs"]):
-            if i < len(medals):
-                message += f"{medals[i]} @{ib_username} — {count} leads\n"
-    else:
-        message += "No leads yet."
 
     await update.message.reply_text(message)
