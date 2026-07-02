@@ -153,8 +153,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         client_link = f"tg://user?id={lead[1]}"
 
-
-
     await context.bot.send_message(
         chat_id=f"@{assigned_ib_username}",
         text=(
@@ -173,7 +171,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 except Exception as e:
     logger.info(f"Could not notify IB: {e}")
-
+    
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "👑 Imperium Welcome Bot is online."
