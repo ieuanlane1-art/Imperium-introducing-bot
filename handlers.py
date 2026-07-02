@@ -140,6 +140,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     assigned_ib_username = lead[5]
 
     mark_clicked(lead_id)
+    
+    await update_live_dashboard(context)
 
     await query.edit_message_text(
         text=(
