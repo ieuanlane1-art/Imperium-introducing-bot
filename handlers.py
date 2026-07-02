@@ -1,6 +1,6 @@
 import logging
 
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
 from config import GROUP_NAME, WELCOME_DELETE_TIME, REMINDER_TIME
@@ -153,7 +153,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         client_link = f"tg://user?id={lead[1]}"
 
-    from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+
 
     await context.bot.send_message(
         chat_id=f"@{assigned_ib_username}",
