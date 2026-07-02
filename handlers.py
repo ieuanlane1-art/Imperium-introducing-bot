@@ -260,3 +260,19 @@ async def dashboard_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     except Exception as e:
         logger.info(f"Could not pin dashboard: {e}")
+        
+async def update_live_dashboard(context):
+    chat_id = get_setting("dashboard_chat_id")
+    message_id = get_setting("dashboard_message_id")
+
+    if not chat_id or not message_id:
+        return
+
+    try:
+        await context.bot.edit_message_text(
+            chat_id=int(chat_id),
+            message_id=int(message_id),
+            text=build_dashboard_text()
+        )
+    except Exception as e:
+        logger.info(f"Dashboard update failed: {e}")
