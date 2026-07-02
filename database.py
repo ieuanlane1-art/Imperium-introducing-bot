@@ -153,3 +153,50 @@ def get_clicked_leads():
 
     conn.close()
     return clicked
+def get_dashboard_stats():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM leads")
+    total = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM leads WHERE clicked = 1")
+    clicked = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM leads
+        WHERE DATE(joined_at) = DATE('now')
+    """)
+    today = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM leads
+        WHERE joined_at >= DATETIME('now', '-7 days')
+    """)
+    week = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM leads
+        WHERE joined_at >= DATETIME('now', '-30 days')
+    """)
+    month = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT assigned_ib_username, COUNT(*)
+        FROM leads
+        GROUP BY assigned_ib_username
+        ORDER BY COUNT(*) DESC
+        LIMIT 3
+    """)
+    top_ibs = cursor.fetchall()
+
+    conn.close()
+
+    return {
+        "total": total,
+        "clicked": clicked,
+        "today": today,
+        "week": week,
+        "month": month,
+        "top_ibs": top_ibs,
+    }
