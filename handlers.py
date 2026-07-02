@@ -176,3 +176,11 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Commands:\n/start\n/help")
+    
+async def chatid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    topic_id = update.message.message_thread_id
+
+    await update.message.reply_text(
+        f"Chat ID:\n{chat_id}\n\nTopic ID:\n{topic_id}"
+    )
