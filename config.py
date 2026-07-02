@@ -8,6 +8,9 @@ WELCOME_DELETE_TIME = 600
 
 REMINDER_TIME = 300
 
+IB_NOTIFY_CHAT_ID = -1003997830047
+IB_NOTIFY_TOPIC_ID = 11638
+
 IBS = [
     {"name": "Ieuan", "username": "IeuanFX_ITA"},
     {"name": "Lewis Turrell", "username": "lturrell"},
