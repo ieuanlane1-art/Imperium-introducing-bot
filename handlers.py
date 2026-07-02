@@ -3,7 +3,13 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from config import GROUP_NAME, WELCOME_DELETE_TIME, REMINDER_TIME
+from config import (
+    GROUP_NAME,
+    WELCOME_DELETE_TIME,
+    REMINDER_TIME,
+    IB_NOTIFY_CHAT_ID,
+    IB_NOTIFY_TOPIC_ID,
+)
 from database import create_lead, get_lead, mark_clicked, mark_reminder_sent
 from keyboards import start_journey_keyboard, open_ib_chat_keyboard
 from lead_manager import assign_next_ib
@@ -146,14 +152,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             username_text = "No username"
 
         await context.bot.send_message(
-            chat_id=f"@{assigned_ib_username}",
+            chat_id=IB_NOTIFY_CHAT_ID,
+            message_thread_id=IB_NOTIFY_TOPIC_ID,
             text=(
                 "🚨 NEW IMPERIUM LEAD\n\n"
-                f"👤 Client:\n{client_name}\n\n"
-                f"📱 Username:\n{username_text}\n\n"
-                "━━━━━━━━━━━━━━\n\n"
-                "Your client is ready to be onboarded.\n\n"
-                "Tap below to message them and get them set up."
+                f"👤 Client: {client_name}\n"
+                f"📱 Username: {username_text}\n\n"
+                f"👔 Assigned IB: @{assigned_ib_username}\n\n"
+                "Tap below to message your client."."
             ),
             reply_markup=InlineKeyboardMarkup(
                 [
