@@ -220,3 +220,29 @@ def get_dashboard_message():
         "topic_id": int(topic_id),
         "message_id": int(message_id),
     }
+def set_setting(key, value):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR REPLACE INTO settings (key, value)
+        VALUES (?, ?)
+    """, (key, str(value)))
+
+    conn.commit()
+    conn.close()
+
+
+def get_setting(key, default=None):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
+    row = cursor.fetchone()
+
+    conn.close()
+
+    if row:
+        return row[0]
+
+    return default
