@@ -116,7 +116,7 @@ def set_setting(key, value):
     conn.commit()
     conn.close()
     
-    def get_total_leads():
+def get_total_leads():
     conn = connect()
     cursor = conn.cursor()
 
@@ -132,8 +132,8 @@ def get_leads_by_ib():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT assigned_ib_username, COUNT(*) 
-        FROM leads 
+        SELECT assigned_ib_username, COUNT(*)
+        FROM leads
         GROUP BY assigned_ib_username
         ORDER BY COUNT(*) DESC
     """)
