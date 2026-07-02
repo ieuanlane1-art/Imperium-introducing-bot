@@ -40,7 +40,6 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
 
     username = lead[2]
     first_name = lead[3]
-
     mention = f"@{username}" if username else first_name
 
     message = await context.bot.send_message(
@@ -50,7 +49,7 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
             "Looks like you haven't started your setup yet.\n\n"
             "Tap below whenever you're ready to get connected with your account manager."
         ),
-        reply_markup=start_journey_keyboard(lead_id)
+        reply_markup=start_journey_keyboard(lead_id),
     )
 
     mark_reminder_sent(lead_id)
@@ -58,10 +57,7 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
     context.job_queue.run_once(
         delete_message,
         WELCOME_DELETE_TIME,
-        data={
-            "chat_id": chat_id,
-            "message_id": message.message_id
-        }
+        data={"chat_id": chat_id, "message_id": message.message_id},
     )
 
 
@@ -80,7 +76,7 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
             username=member.username,
             first_name=member.first_name,
             assigned_ib=ib["name"],
-            assigned_ib_username=ib["username"]
+            assigned_ib_username=ib["username"],
         )
 
         mention = f"@{member.username}" if member.username else member.first_name
@@ -91,25 +87,19 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 "You're one click away from getting connected with your dedicated account manager.\n\n"
                 "Tap below to begin."
             ),
-            reply_markup=start_journey_keyboard(lead_id)
+            reply_markup=start_journey_keyboard(lead_id),
         )
 
         context.job_queue.run_once(
             delete_message,
             WELCOME_DELETE_TIME,
-            data={
-                "chat_id": update.effective_chat.id,
-                "message_id": message.message_id
-            }
+            data={"chat_id": update.effective_chat.id, "message_id": message.message_id},
         )
 
         context.job_queue.run_once(
             send_reminder,
             REMINDER_TIME,
-            data={
-                "lead_id": lead_id,
-                "chat_id": update.effective_chat.id
-            }
+            data={"lead_id": lead_id, "chat_id": update.effective_chat.id},
         )
 
 
@@ -141,44 +131,48 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"@{assigned_ib_username}\n\n"
             "Tap below to begin your setup."
         ),
-        reply_markup=open_ib_chat_keyboard(assigned_ib_username)
+        reply_markup=open_ib_chat_keyboard(assigned_ib_username),
     )
 
-        try:
-            client_name = lead[3] or lead[2] or "New client"
-            client_username = lead[2]
+    try:
+        client_name = lead[3] or lead[2] or "New client"
+        client_username = lead[2]
 
-            if client_username:
-                client_link = f"https://t.me/{client_username}"
-            else:
-                client_link = f"tg://user?id={lead[1]}"
+        if client_username:
+            client_link = f"https://t.me/{client_username}"
+            username_text = f"@{client_username}"
+        else:
+            client_link = f"tg://user?id={lead[1]}"
+            username_text = "No username"
 
-            await context.bot.send_message(
-                chat_id=f"@{assigned_ib_username}",
-                text=(
-                    "🔔 NEW IMPERIUM CLIENT\n\n"
-                    f"Your new client {client_name} is ready to join the team.\n\n"
-                    "Message them now and get them set up."
-                ),
-                reply_markup=InlineKeyboardMarkup([
+        await context.bot.send_message(
+            chat_id=f"@{assigned_ib_username}",
+            text=(
+                "🚨 NEW IMPERIUM LEAD\n\n"
+                f"👤 Client:\n{client_name}\n\n"
+                f"📱 Username:\n{username_text}\n\n"
+                "━━━━━━━━━━━━━━\n\n"
+                "Your client is ready to be onboarded.\n\n"
+                "Tap below to message them and get them set up."
+            ),
+            reply_markup=InlineKeyboardMarkup(
+                [
                     [
                         InlineKeyboardButton(
                             "💬 Message Client",
-                            url=client_link
+                            url=client_link,
                         )
                     ]
-            ])
+                ]
+            ),
         )
     except Exception as e:
-         logger.info(f"Could not notify IB: {e}")
-    
+        logger.info(f"Could not notify IB: {e}")
+
+
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "👑 Imperium Welcome Bot is online."
-    )
+    await update.message.reply_text("👑 Imperium Welcome Bot is online.")
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Commands:\n/start\n/help"
-    )
+    await update.message.reply_text("Commands:\n/start\n/help")
