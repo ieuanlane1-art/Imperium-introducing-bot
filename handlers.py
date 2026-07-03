@@ -188,9 +188,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "admin_addib":
         set_admin_state(query.from_user.id, "awaiting_ib_name", "")
     
-        await query.edit_message_text(
-            f"{TRIDENT} Add New IB\n\nSend me the IB's display name.",
-            reply_markup=admin_panel_keyboard(),
+        await context.bot.send_message(
+            chat_id=query.message.chat_id,
+            text=(
+                f"{TRIDENT} Add New IB\n\n"
+                "Send me the IB's display name.\n\n"
+                "Example:\n"
+                "Alex"
+            ),
         )
         return
 
