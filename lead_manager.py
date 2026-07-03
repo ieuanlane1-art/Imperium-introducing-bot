@@ -1,15 +1,35 @@
 from config import IBS
-from database import get_setting, set_setting
+from database import get_setting, set_setting, get_active_ibs, add_ib
+
+
+def ensure_default_ibs():
+    active_ibs = get_active_ibs()
+
+    if active_ibs:
+        return active_ibs
+
+    for ib in IBS:
+        add_ib(ib["name"], ib["username"])
+
+    return get_active_ibs()
 
 
 def assign_next_ib():
+    ibs = ensure_default_ibs()
+
+    if not ibs:
+        raise ValueError("No active IBs available")
+
     current_index = int(get_setting("next_ib_index", "0"))
 
-    ib = IBS[current_index]
+    if current_index >= len(ibs):
+        current_index = 0
+
+    ib = ibs[current_index]
 
     next_index = current_index + 1
 
-    if next_index >= len(IBS):
+    if next_index >= len(ibs):
         next_index = 0
 
     set_setting("next_ib_index", str(next_index))
