@@ -174,16 +174,16 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return
 
-    message = f"{TRIDENT} Active IB Rotation\n\n"
-
-    for index, ib in enumerate(ibs, start=1):
-        message += f"{index}. {ib['name']} — @{ib['username']}\n"
-
-    await query.edit_message_text(
-        message,
-        reply_markup=admin_panel_keyboard(),
-    )
-    return
+        message = f"{TRIDENT} Active IB Rotation\n\n"
+    
+        for index, ib in enumerate(ibs, start=1):
+            message += f"{index}. {ib['name']} — @{ib['username']}\n"
+    
+        await query.edit_message_text(
+            message,
+            reply_markup=admin_panel_keyboard(),
+        )
+        return
     
     if data == "admin_addib":
         set_admin_state(query.from_user.id, "awaiting_ib_name", "")
