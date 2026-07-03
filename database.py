@@ -270,3 +270,46 @@ def get_latest_lead_by_telegram_id(telegram_id):
 
     conn.close()
     return lead
+    
+def add_ib(name, username):
+    username = username.replace("@", "")
+
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR REPLACE INTO ibs (name, username, active)
+        VALUES (?, ?, 1)
+    """, (name, username))
+
+    conn.commit()
+    conn.close()
+
+
+def remove_ib(username):
+    username = username.replace("@", "")
+
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("UPDATE ibs SET active = 0 WHERE username = ?", (username,))
+
+    conn.commit()
+    conn.close()
+
+
+def get_active_ibs():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT name, username
+        FROM ibs
+        WHERE active = 1
+        ORDER BY id ASC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [{"name": row[0], "username": row[1]} for row in rows]
