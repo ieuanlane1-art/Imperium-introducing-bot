@@ -32,6 +32,7 @@ from keyboards import (
     open_ib_chat_keyboard,
     admin_panel_keyboard,
     promo_start_keyboard,
+    remove_ib_keyboard
 )
 from lead_manager import assign_next_ib
 
@@ -167,7 +168,50 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not ibs:
             await query.edit_message_text("No active IBs found.")
             return
+    if data == "admin_addib":
+        await query.edit_message_text(
+            f"{TRIDENT} Add New IB\n\n"
+            "Use this format:\n\n"
+            "/addib Name @username\n\n"
+            "Example:\n"
+            "/addib Alex @AlexFX",
+            reply_markup=admin_panel_keyboard(),
+        )
+        return
 
+    if data == "admin_removeib":
+        ibs = get_active_ibs()
+
+        if not ibs:
+            await query.edit_message_text(
+                "No active IBs found.",
+                reply_markup=admin_panel_keyboard(),
+            )
+            return
+
+        await query.edit_message_text(
+            f"{TRIDENT} Select an IB to remove:",
+            reply_markup=remove_ib_keyboard(ibs),
+        )
+        return
+
+    if data.startswith("remove_ib:"):
+        username = data.split(":", 1)[1]
+
+        remove_ib(username)
+
+        await query.edit_message_text(
+            f"{CHECK} Removed IB:\n\n@{username}",
+            reply_markup=admin_panel_keyboard(),
+        )
+        return
+
+    if data == "admin_back":
+        await query.edit_message_text(
+            f"{TRIDENT} Imperium Admin Panel\n\nChoose an option below:",
+            reply_markup=admin_panel_keyboard(),
+        )
+        return
         message = f"{TRIDENT} Active IB Rotation\n\n"
 
         for index, ib in enumerate(ibs, start=1):
