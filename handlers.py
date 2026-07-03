@@ -282,3 +282,9 @@ async def update_live_dashboard(context):
         )
     except Exception as e:
         logger.info(f"Dashboard update failed: {e}")
+        
+async def panel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "👑 Imperium Admin Panel\n\nChoose an option below:",
+        reply_markup=admin_panel_keyboard()
+    )
