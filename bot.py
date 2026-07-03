@@ -21,6 +21,7 @@ from handlers import (
     panel_command,
     listibs_command,
     addib_command,
+    removeib_command,
 )
 
 
@@ -44,6 +45,7 @@ def main():
     app.add_handler(CommandHandler("panel", panel_command))
     app.add_handler(CommandHandler("listibs", listibs_command))
     app.add_handler(CommandHandler("addib", addib_command))
+    app.add_handler(CommandHandler("removeib", removeib_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("chatid", chatid_command))
     app.add_handler(CommandHandler("stats", stats_command))
