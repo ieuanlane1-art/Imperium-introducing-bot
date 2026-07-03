@@ -24,6 +24,7 @@ from database import (
     set_setting,
     get_setting,
     get_active_ibs,
+    add_ib,
 )
 from keyboards import (
     start_journey_keyboard,
@@ -423,3 +424,18 @@ async def listibs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message += f"{index}. {ib['name']} — @{ib['username']}\n"
 
     await update.message.reply_text(message)
+    
+    async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        if len(context.args) < 2:
+            await update.message.reply_text("Usage: /addib Name @username")
+            return
+    
+        username = context.args[-1].replace("@", "")
+        name = " ".join(context.args[:-1])
+    
+        add_ib(name, username)
+    
+        await update.message.reply_text(
+            f"{CHECK} Added IB:\n\n{name} — @{username}"
+        )
+    
