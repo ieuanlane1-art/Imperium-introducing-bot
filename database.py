@@ -32,6 +32,14 @@ def setup_database():
             value TEXT
         )
     """)
+    cursor.execute("""
+CREATE TABLE IF NOT EXISTS ibs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    active INTEGER DEFAULT 1
+)
+""")
 
     conn.commit()
     conn.close()
