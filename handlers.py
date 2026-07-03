@@ -22,7 +22,11 @@ from database import (
     set_setting,
     get_setting,
 )
-from keyboards import start_journey_keyboard, open_ib_chat_keyboard
+from keyboards import (
+    start_journey_keyboard,
+    open_ib_chat_keyboard,
+    admin_panel_keyboard,
+)
 from lead_manager import assign_next_ib
 
 logger = logging.getLogger(__name__)
