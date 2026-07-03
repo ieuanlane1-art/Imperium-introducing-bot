@@ -10,6 +10,7 @@ from config import (
     IB_NOTIFY_CHAT_ID,
     IB_NOTIFY_TOPIC_ID,
     PROMO_TARGET_CHAT_ID,
+    get_latest_lead_by_telegram_id,
 )
 from database import (
     create_lead,
