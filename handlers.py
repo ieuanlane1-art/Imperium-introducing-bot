@@ -22,6 +22,7 @@ from database import (
     get_dashboard_stats,
     set_setting,
     get_setting,
+    get_latest_lead_by_telegram_id,
 )
 from keyboards import (
     start_journey_keyboard,
