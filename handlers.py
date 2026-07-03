@@ -32,6 +32,16 @@ from keyboards import (
 from lead_manager import assign_next_ib
 
 logger = logging.getLogger(__name__)
+# Imperium branding
+TRIDENT = "\U0001F531"      # 🔱
+CHECK = "\u2705"            # ✅
+SIREN = "\U0001F6A8"        # 🚨
+PERSON = "\U0001F464"       # 👤
+PHONE = "\U0001F4F1"        # 📱
+TIE = "\U0001F454"          # 👔
+CHAT = "\U0001F4AC"         # 💬
+ROCKET = "\U0001F680"       # 🚀
+CHART = "\U0001F4CA"        # 📊
 
 
 async def delete_message(context: ContextTypes.DEFAULT_TYPE):
