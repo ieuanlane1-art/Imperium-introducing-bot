@@ -37,3 +37,13 @@ def admin_panel_keyboard():
         [InlineKeyboardButton("📊 Dashboard", callback_data="admin_dashboard")],
         [InlineKeyboardButton("📈 Stats", callback_data="admin_stats")]
     ])
+    
+def promo_start_keyboard():
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "🚀 Get Started",
+                callback_data="promo_start"
+            )
+        ]
+    ])
