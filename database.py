@@ -278,13 +278,15 @@ def add_ib(name, username):
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT OR REPLACE INTO ibs (name, username, active)
+        INSERT INTO ibs (name, username, active)
         VALUES (?, ?, 1)
+        ON CONFLICT(username) DO UPDATE SET
+            name = excluded.name,
+            active = 1
     """, (name, username))
 
     conn.commit()
     conn.close()
-
 
 def remove_ib(username):
     username = username.replace("@", "")
