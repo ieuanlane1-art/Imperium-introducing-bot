@@ -16,18 +16,18 @@ PROMO_TARGET_CHAT_ID = -1004420905654
 
 IBS = [
     {"name": "Ieuan", "username": "IeuanFX_ITA"},
-    {"name": "Lewis Turrell", "username": "lturrell"},
-    {"name": "Uuvs0ap", "username": "Uuvs0ap"},
+    {"name": "Luke", "username": "lturrell"},
+    {"name": "Mitch", "username": "Uuvs0ap"},
     {"name": "Tommy FX", "username": "tommyyyyfx"},
-    {"name": "Imperium Trading Group", "username": "ImperiumTradingGroupLTD"},
+    {"name": "Bevs", "username": "ImperiumTradingGroupLTD"},
     {"name": "Alex", "username": "Fxwithalexf1"},
     {"name": "Shaun", "username": "Shaunb1996"},
     {"name": "Harley", "username": "harleyd10"},
     {"name": "Tommy Voice", "username": "tommyvoice"},
-    {"name": "Lew", "username": "Lew6FX"},
+    {"name": "Lewis", "username": "Lew6FX"},
     {"name": "Iestyn", "username": "iestynjohns"},
     {"name": "Jack", "username": "JACK_ITAA"},
-    {"name": "CST", "username": "cst071"},
+    {"name": "Cody", "username": "cst071"},
     {"name": "Brandan", "username": "Brandan32"}
 ]
 
