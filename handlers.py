@@ -9,6 +9,7 @@ from config import (
     REMINDER_TIME,
     IB_NOTIFY_CHAT_ID,
     IB_NOTIFY_TOPIC_ID,
+    PROMO_TARGET_CHAT_ID,
 )
 from database import (
     create_lead,
