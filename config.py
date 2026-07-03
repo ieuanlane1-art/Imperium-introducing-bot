@@ -34,3 +34,7 @@ IBS = [
 PREFILLED_MESSAGE = (
     "Hi! I've just joined Imperium and I'd like to get started with copy trading."
 )
+
+ADMIN_USER_IDS = [
+    8690177711,  # you
+]
