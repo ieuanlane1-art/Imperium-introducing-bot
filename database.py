@@ -318,3 +318,13 @@ def get_active_ibs():
     conn.close()
 
     return [{"name": row[0], "username": row[1]} for row in rows]
+    
+def set_admin_state(user_id, state, value=""):
+    set_setting(f"admin_state_{user_id}", state)
+    set_setting(f"admin_state_value_{user_id}", value)
+
+
+def get_admin_state(user_id):
+    state = get_setting(f"admin_state_{user_id}")
+    value = get_setting(f"admin_state_value_{user_id}", "")
+    return state, value
