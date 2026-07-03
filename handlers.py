@@ -425,7 +425,7 @@ async def listibs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(message)
     
-    async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if len(context.args) < 2:
             await update.message.reply_text("Usage: /addib Name @username")
             return
