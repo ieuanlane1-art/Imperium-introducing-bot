@@ -159,7 +159,20 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await query.answer(f"Promo posted successfully {CHECK}")
         return
+    if data == "listibs":
+        ibs = get_active_ibs()
 
+        if not ibs:
+            await query.edit_message_text("No active IBs found.")
+            return
+
+        message = f"{TRIDENT} Active IB Rotation\n\n"
+
+        for index, ib in enumerate(ibs, start=1):
+            message += f"{index}. {ib['name']} — @{ib['username']}\n"
+
+        await query.edit_message_text(message)
+        return
     if data == "promo_start":
         user = query.from_user
 
