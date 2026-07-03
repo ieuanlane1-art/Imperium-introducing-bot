@@ -150,6 +150,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     data = query.data
+    await query.answer(f"Clicked: {data}", show_alert=True)
 
     if data == "admin_promo":
         await context.bot.send_message(
