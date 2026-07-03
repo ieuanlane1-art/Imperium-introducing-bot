@@ -26,6 +26,7 @@ from keyboards import (
     start_journey_keyboard,
     open_ib_chat_keyboard,
     admin_panel_keyboard,
+    promo_start_keyboard,
 )
 from lead_manager import assign_next_ib
 
