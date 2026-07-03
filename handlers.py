@@ -32,16 +32,18 @@ from keyboards import (
 from lead_manager import assign_next_ib
 
 logger = logging.getLogger(__name__)
-# Imperium branding
-TRIDENT = "\U0001F531"      # 🔱
-CHECK = "\u2705"            # ✅
-SIREN = "\U0001F6A8"        # 🚨
-PERSON = "\U0001F464"       # 👤
-PHONE = "\U0001F4F1"        # 📱
-TIE = "\U0001F454"          # 👔
-CHAT = "\U0001F4AC"         # 💬
-ROCKET = "\U0001F680"       # 🚀
-CHART = "\U0001F4CA"        # 📊
+
+# Imperium branding - emoji-safe Unicode
+TRIDENT = "\U0001F531"   # 🔱
+CHECK = "\u2705"         # ✅
+SIREN = "\U0001F6A8"     # 🚨
+PERSON = "\U0001F464"    # 👤
+PHONE = "\U0001F4F1"     # 📱
+TIE = "\U0001F454"       # 👔
+CHAT = "\U0001F4AC"      # 💬
+ROCKET = "\U0001F680"    # 🚀
+CHART = "\U0001F4CA"     # 📊
+WAVE = "\U0001F44B"      # 👋
 
 
 async def delete_message(context: ContextTypes.DEFAULT_TYPE):
@@ -78,7 +80,7 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
     message = await context.bot.send_message(
         chat_id=chat_id,
         text=(
-            f"ð {mention}\n\n"
+            f"{WAVE} {mention}\n\n"
             "Looks like you haven't started your setup yet.\n\n"
             "Tap below whenever you're ready to get connected with your account manager."
         ),
@@ -116,7 +118,7 @@ async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
         message = await update.message.reply_text(
             text=(
-                f"ð Welcome {mention} to {GROUP_NAME}!\n\n"
+                f"{TRIDENT} Welcome {mention} to {GROUP_NAME}!\n\n"
                 "You're one click away from getting connected with your dedicated account manager.\n\n"
                 "Tap below to begin."
             ),
@@ -146,14 +148,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=PROMO_TARGET_CHAT_ID,
             text=(
-                "ð Ready to start your journey with Imperium?\n\n"
+                f"{TRIDENT} Ready to start your journey with Imperium?\n\n"
                 "If you haven't started yet, tap below and we'll assign you "
                 "a dedicated account manager instantly."
             ),
             reply_markup=promo_start_keyboard(),
         )
 
-        await query.answer("Promo posted successfully â")
+        await query.answer(f"Promo posted successfully {CHECK}")
         return
 
     if data == "promo_start":
@@ -187,14 +189,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=IB_NOTIFY_CHAT_ID,
             message_thread_id=IB_NOTIFY_TOPIC_ID,
             text=(
-                "ð¨ NEW IMPERIUM LEAD\n\n"
-                f"ð¤ Client: {client_name}\n"
-                f"ð± Username: {username_text}\n\n"
-                f"ð Assigned IB: @{ib['username']}\n\n"
+                f"{SIREN} NEW IMPERIUM LEAD\n\n"
+                f"{PERSON} Client: {client_name}\n"
+                f"{PHONE} Username: {username_text}\n\n"
+                f"{TIE} Assigned IB: @{ib['username']}\n\n"
                 "Tap below to message your client."
             ),
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("ð¬ Message Client", url=client_link)]]
+                [[InlineKeyboardButton(f"{CHAT} Message Client", url=client_link)]]
             ),
         )
 
@@ -203,7 +205,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response_message = await context.bot.send_message(
             chat_id=target_chat_id,
             text=(
-                f"â {mention}, you're all set!\n\n"
+                f"{CHECK} {mention}, you're all set!\n\n"
                 "Your dedicated account manager is:\n\n"
                 f"@{ib['username']}\n\n"
                 "Tap below to begin your setup."
@@ -217,7 +219,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             data={"chat_id": target_chat_id, "message_id": response_message.message_id},
         )
 
-        await query.answer(f"Assigned to @{ib['username']} â")
+        await query.answer(f"Assigned to @{ib['username']} {CHECK}")
         return
 
     if not data.startswith("start:"):
@@ -238,7 +240,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.edit_message_text(
         text=(
-            "â You're all set!\n\n"
+            f"{CHECK} You're all set!\n\n"
             "Your dedicated account manager is:\n\n"
             f"@{assigned_ib_username}\n\n"
             "Tap below to begin your setup."
@@ -261,14 +263,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=IB_NOTIFY_CHAT_ID,
             message_thread_id=IB_NOTIFY_TOPIC_ID,
             text=(
-                "ð¨ NEW IMPERIUM LEAD\n\n"
-                f"ð¤ Client: {client_name}\n"
-                f"ð± Username: {username_text}\n\n"
-                f"ð Assigned IB: @{assigned_ib_username}\n\n"
+                f"{SIREN} NEW IMPERIUM LEAD\n\n"
+                f"{PERSON} Client: {client_name}\n"
+                f"{PHONE} Username: {username_text}\n\n"
+                f"{TIE} Assigned IB: @{assigned_ib_username}\n\n"
                 "Tap below to message your client."
             ),
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("ð¬ Message Client", url=client_link)]]
+                [[InlineKeyboardButton(f"{CHAT} Message Client", url=client_link)]]
             ),
         )
     except Exception as e:
@@ -276,7 +278,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("ð Imperium Welcome Bot is online.")
+    await update.message.reply_text(f"{TRIDENT} Imperium Welcome Bot is online.")
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -303,12 +305,12 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         conversion = round((clicked / total) * 100, 1)
 
     message = (
-        "ð IMPERIUM DASHBOARD\n\n"
-        f"ð Today's Leads: {stats['today']}\n"
-        f"ð This Week: {stats['week']}\n"
-        f"ðï¸ This Month: {stats['month']}\n\n"
-        f"ð Started Setup: {clicked}/{total}\n"
-        f"ð Conversion Rate: {conversion}%"
+        f"{CHART} IMPERIUM DASHBOARD\n\n"
+        f"Today's Leads: {stats['today']}\n"
+        f"This Week: {stats['week']}\n"
+        f"This Month: {stats['month']}\n\n"
+        f"{ROCKET} Started Setup: {clicked}/{total}\n"
+        f"Conversion Rate: {conversion}%"
     )
 
     await update.message.reply_text(message)
@@ -325,12 +327,12 @@ def build_dashboard_text():
         conversion = round((clicked / total) * 100, 1)
 
     return (
-        "ð LIVE IMPERIUM DASHBOARD\n\n"
-        f"ð Today's Leads: {stats['today']}\n"
-        f"ð This Week: {stats['week']}\n"
-        f"ðï¸ This Month: {stats['month']}\n\n"
-        f"ð Started Setup: {clicked}/{total}\n"
-        f"ð Conversion Rate: {conversion}%"
+        f"{TRIDENT} LIVE IMPERIUM DASHBOARD\n\n"
+        f"Today's Leads: {stats['today']}\n"
+        f"This Week: {stats['week']}\n"
+        f"This Month: {stats['month']}\n\n"
+        f"{ROCKET} Started Setup: {clicked}/{total}\n"
+        f"Conversion Rate: {conversion}%"
     )
 
 
@@ -372,6 +374,6 @@ async def update_live_dashboard(context):
 
 async def panel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "ð Imperium Admin Panel\n\nChoose an option below:",
+        f"{TRIDENT} Imperium Admin Panel\n\nChoose an option below:",
         reply_markup=admin_panel_keyboard(),
     )
