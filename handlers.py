@@ -185,7 +185,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     return
     
-    if data == "admin_addib":
+    if data == "test_addib":
         await query.answer("Add IB clicked ✅")
     
         await query.edit_message_text(
