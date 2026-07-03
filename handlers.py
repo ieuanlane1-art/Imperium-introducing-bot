@@ -130,6 +130,20 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     data = query.data
+    
+    if data == "admin_promo":
+    await context.bot.send_message(
+        chat_id=PROMO_TARGET_CHAT_ID,
+        text=(
+            "👑 Ready to start your journey with Imperium?\n\n"
+            "If you haven't started yet, tap below and we'll assign you "
+            "a dedicated account manager instantly."
+        ),
+        reply_markup=promo_start_keyboard()
+    )
+
+    await query.answer("Promo posted successfully ✅")
+    return
 
     if not data.startswith("start:"):
         return
