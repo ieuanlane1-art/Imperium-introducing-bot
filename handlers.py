@@ -185,19 +185,19 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     return
     
-if data == "admin_addib":
-    set_admin_state(query.from_user.id, "awaiting_ib_name", "")
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=(
-            f"{TRIDENT} Add New IB\n\n"
-            "Send me the IB's display name.\n\n"
-            "Example:\n"
-            "Alex"
-        ),
-    )
-    return
+    if data == "admin_addib":
+        set_admin_state(query.from_user.id, "awaiting_ib_name", "")
+    
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=(
+                f"{TRIDENT} Add New IB\n\n"
+                "Send me the IB's display name.\n\n"
+                "Example:\n"
+                "Alex"
+            ),
+        )
+        return
              
 
     if data == "admin_removeib":
