@@ -246,3 +246,19 @@ def get_setting(key, default=None):
         return row[0]
 
     return default
+    
+def get_latest_lead_by_telegram_id(telegram_id):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM leads
+        WHERE telegram_id = ?
+        ORDER BY id DESC
+        LIMIT 1
+    """, (telegram_id,))
+
+    lead = cursor.fetchone()
+
+    conn.close()
+    return lead
