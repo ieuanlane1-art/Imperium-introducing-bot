@@ -10,6 +10,7 @@ from config import (
     IB_NOTIFY_CHAT_ID,
     IB_NOTIFY_TOPIC_ID,
     PROMO_TARGET_CHAT_ID,
+    ADMIN_USER_IDS,
 )
 from database import (
     create_lead,
@@ -40,17 +41,31 @@ from lead_manager import assign_next_ib
 
 logger = logging.getLogger(__name__)
 
+
+def is_admin(update: Update):
+    return bool(update.effective_user and update.effective_user.id in ADMIN_USER_IDS)
+
+
+def is_admin_user_id(user_id):
+    return user_id in ADMIN_USER_IDS
+
+
+async def deny_message(update: Update):
+    if update.message:
+        await update.message.reply_text("â Access denied.")
+
+
 # Imperium branding - emoji-safe Unicode
-TRIDENT = "\U0001F531"   # 🔱
-CHECK = "\u2705"         # ✅
-SIREN = "\U0001F6A8"     # 🚨
-PERSON = "\U0001F464"    # 👤
-PHONE = "\U0001F4F1"     # 📱
-TIE = "\U0001F454"       # 👔
-CHAT = "\U0001F4AC"      # 💬
-ROCKET = "\U0001F680"    # 🚀
-CHART = "\U0001F4CA"     # 📊
-WAVE = "\U0001F44B"      # 👋
+TRIDENT = "\U0001F531"   # ð±
+CHECK = "\u2705"         # â
+SIREN = "\U0001F6A8"     # ð¨
+PERSON = "\U0001F464"    # ð¤
+PHONE = "\U0001F4F1"     # ð±
+TIE = "\U0001F454"       # ð
+CHAT = "\U0001F4AC"      # ð¬
+ROCKET = "\U0001F680"    # ð
+CHART = "\U0001F4CA"     # ð
+WAVE = "\U0001F44B"      # ð
 
 
 async def delete_message(context: ContextTypes.DEFAULT_TYPE):
@@ -151,6 +166,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = query.data
     await query.answer()
 
+    admin_callbacks = {"admin_promo", "listibs", "admin_addib", "admin_removeib", "admin_back", "dashboard", "stats"}
+    if (data in admin_callbacks or data.startswith("remove_ib:")) and not is_admin_user_id(query.from_user.id):
+        await query.answer("â Access denied.", show_alert=True)
+        return
+
     if data == "admin_promo":
         await context.bot.send_message(
             chat_id=PROMO_TARGET_CHAT_ID,
@@ -177,7 +197,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = f"{TRIDENT} Active IB Rotation\n\n"
     
         for index, ib in enumerate(ibs, start=1):
-            message += f"{index}. {ib['name']} — @{ib['username']}\n"
+            message += f"{index}. {ib['name']} â @{ib['username']}\n"
     
         await query.edit_message_text(
             message,
@@ -233,13 +253,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=admin_panel_keyboard(),
         )
         return
-        message = f"{TRIDENT} Active IB Rotation\n\n"
 
-        for index, ib in enumerate(ibs, start=1):
-            message += f"{index}. {ib['name']} — @{ib['username']}\n"
-
-        await query.edit_message_text(message)
-        return
     if data == "promo_start":
         user = query.from_user
 
@@ -394,6 +408,10 @@ async def chatid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
     stats = get_dashboard_stats()
 
     total = stats["total"]
@@ -436,6 +454,10 @@ def build_dashboard_text():
 
 
 async def dashboard_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
     message = await update.message.reply_text(build_dashboard_text())
 
     set_setting("dashboard_chat_id", update.effective_chat.id)
@@ -472,12 +494,20 @@ async def update_live_dashboard(context):
 
 
 async def panel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
     await update.message.reply_text(
         f"{TRIDENT} Imperium Admin Panel\n\nChoose an option below:",
         reply_markup=admin_panel_keyboard(),
     )
 
 async def listibs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
     ibs = get_active_ibs()
 
     if not ibs:
@@ -487,11 +517,15 @@ async def listibs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = f"{TRIDENT} Active IB Rotation\n\n"
 
     for index, ib in enumerate(ibs, start=1):
-        message += f"{index}. {ib['name']} — @{ib['username']}\n"
+        message += f"{index}. {ib['name']} â @{ib['username']}\n"
 
     await update.message.reply_text(message)
     
 async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
         if len(context.args) < 2:
             await update.message.reply_text("Usage: /addib Name @username")
             return
@@ -502,10 +536,14 @@ async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         add_ib(name, username)
     
         await update.message.reply_text(
-            f"{CHECK} Added IB:\n\n{name} — @{username}"
+            f"{CHECK} Added IB:\n\n{name} â @{username}"
         )
     
 async def removeib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        await deny_message(update)
+        return
+
     if len(context.args) < 1:
         await update.message.reply_text(
             "Usage: /removeib @username"
@@ -521,6 +559,9 @@ async def removeib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_admin(update):
+        return
+
     user_id = update.effective_user.id
     text = update.message.text.strip()
 
@@ -542,7 +583,7 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         set_admin_state(user_id, "", "")
 
         await update.message.reply_text(
-            f"{CHECK} Added IB:\n\n{name} — @{username}",
+            f"{CHECK} Added IB:\n\n{name} â @{username}",
             reply_markup=admin_panel_keyboard()
         )
         return
