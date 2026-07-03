@@ -34,6 +34,8 @@ def main():
         raise ValueError("BOT_TOKEN is missing. Add it in Railway Variables.")
 
     setup_database()
+    from lead_manager import ensure_default_ibs
+    ensure_default_ibs()
 
     app = Application.builder().token(BOT_TOKEN).build()
 
