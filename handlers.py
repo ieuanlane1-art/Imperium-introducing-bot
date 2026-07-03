@@ -161,6 +161,21 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if data == "promo_start":
         user = query.from_user
+        existing_lead = get_latest_lead_by_telegram_id(user.id)
+
+        if existing_lead:
+            assigned_ib_username = existing_lead[5]
+
+            await query.edit_message_text(
+                text=(
+                    f"{CHECK} You're already assigned!\n\n"
+                    "Your dedicated account manager is:\n\n"
+                    f"@{assigned_ib_username}\n\n"
+                    "Tap below to continue your setup."
+                 ),
+                 reply_markup=open_ib_chat_keyboard(assigned_ib_username),
+             )
+             return
         ib = assign_next_ib()
 
         lead_id = create_lead(
