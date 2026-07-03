@@ -145,6 +145,58 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.answer("Promo posted successfully ✅")
     return
+    
+    if data == "promo_start":
+    user = query.from_user
+    ib = assign_next_ib()
+
+    lead_id = create_lead(
+        telegram_id=user.id,
+        username=user.username,
+        first_name=user.first_name,
+        assigned_ib=ib["name"],
+        assigned_ib_username=ib["username"]
+    )
+
+    mark_clicked(lead_id)
+    await update_live_dashboard(context)
+
+    client_name = user.first_name or user.username or "New client"
+    client_username = user.username
+
+    if client_username:
+        client_link = f"https://t.me/{client_username}"
+        username_text = f"@{client_username}"
+    else:
+        client_link = f"tg://user?id={user.id}"
+        username_text = "No username"
+
+    await context.bot.send_message(
+        chat_id=IB_NOTIFY_CHAT_ID,
+        message_thread_id=IB_NOTIFY_TOPIC_ID,
+        text=(
+            "🚨 NEW IMPERIUM LEAD\n\n"
+            f"👤 Client: {client_name}\n"
+            f"📱 Username: {username_text}\n\n"
+            f"👔 Assigned IB: @{ib['username']}\n\n"
+            "Tap below to message your client."
+        ),
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("💬 Message Client", url=client_link)]]
+        )
+    )
+
+    await query.edit_message_text(
+        text=(
+            "✅ You're all set!\n\n"
+            "Your dedicated account manager is:\n\n"
+            f"@{ib['username']}\n\n"
+            "Tap below to begin your setup."
+        ),
+        reply_markup=open_ib_chat_keyboard(ib["username"])
+    )
+
+    return
 
     if not data.startswith("start:"):
         return
