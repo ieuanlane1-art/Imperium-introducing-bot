@@ -25,6 +25,7 @@ from database import (
     get_setting,
     get_active_ibs,
     add_ib,
+    remove_ib,
 )
 from keyboards import (
     start_journey_keyboard,
@@ -439,3 +440,15 @@ async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{CHECK} Added IB:\n\n{name} — @{username}"
         )
     
+async def removeib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) < 1:
+        await update.message.reply_text("Usage: /removeib @username")
+        return
+
+    username = context.args[0].replace("@", "")
+
+    remove_ib(username)
+
+    await update.message.reply_text(
+        f"{CHECK} Removed IB:\n\n@{username}"
+    )
