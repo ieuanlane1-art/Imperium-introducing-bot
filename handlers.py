@@ -500,3 +500,30 @@ async def removeib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"{CHECK} Removed IB:\n\n@{username}"
     )
+
+async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    text = update.message.text.strip()
+
+    state, value = get_admin_state(user_id)
+
+    if state == "awaiting_ib_name":
+        set_admin_state(user_id, "awaiting_ib_username", text)
+
+        await update.message.reply_text(
+            f"{TRIDENT} Got it.\n\nNow send the IB's @username."
+        )
+        return
+
+    if state == "awaiting_ib_username":
+        name = value
+        username = text.replace("@", "")
+
+        add_ib(name, username)
+        set_admin_state(user_id, "", "")
+
+        await update.message.reply_text(
+            f"{CHECK} Added IB:\n\n{name} — @{username}",
+            reply_markup=admin_panel_keyboard()
+        )
+        return
