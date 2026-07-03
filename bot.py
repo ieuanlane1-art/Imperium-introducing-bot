@@ -19,6 +19,7 @@ from handlers import (
     button_handler,
     dashboard_command,
     panel_command,
+    listibs_command,
 )
 
 
@@ -38,6 +39,7 @@ def main():
 
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("panel", panel_command))
+    app.add_handler(CommandHandler("listibs", listibs_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("chatid", chatid_command))
     app.add_handler(CommandHandler("stats", stats_command))
