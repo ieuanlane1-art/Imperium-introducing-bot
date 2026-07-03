@@ -170,16 +170,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not ibs:
             await query.edit_message_text("No active IBs found.")
             return
-    if data == "admin_addib":
-        await query.edit_message_text(
-            f"{TRIDENT} Add New IB\n\n"
-            "Use this format:\n\n"
-            "/addib Name @username\n\n"
-            "Example:\n"
-            "/addib Alex @AlexFX",
-            reply_markup=admin_panel_keyboard(),
-        )
-        return
+if data == "admin_addib":
+    set_admin_state(query.from_user.id, "awaiting_ib_name", "")
+
+    await query.edit_message_text(
+        f"{TRIDENT} Add New IB\n\n"
+        "Send me the IB's display name.\n\n"
+        "Example:\n"
+        "Alex",
+        reply_markup=admin_panel_keyboard(),
+    )
+    return
 
     if data == "admin_removeib":
         ibs = get_active_ibs()
