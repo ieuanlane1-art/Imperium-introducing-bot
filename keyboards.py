@@ -37,6 +37,8 @@ def admin_panel_keyboard():
         [InlineKeyboardButton("📊 Dashboard", callback_data="dashboard")],
         [InlineKeyboardButton("📈 Stats", callback_data="stats")],
         [InlineKeyboardButton("👥 List IBs", callback_data="listibs")],
+        [InlineKeyboardButton("➕ Add IB", callback_data="admin_addib")],
+        [InlineKeyboardButton("➖ Remove IB", callback_data="admin_removeib")],
     ])
     
 def promo_start_keyboard():
@@ -48,3 +50,20 @@ def promo_start_keyboard():
             )
         ]
     ])
+    
+def remove_ib_keyboard(ibs):
+    buttons = []
+
+    for ib in ibs:
+        buttons.append([
+            InlineKeyboardButton(
+                f"❌ {ib['name']} — @{ib['username']}",
+                callback_data=f"remove_ib:{ib['username']}"
+            )
+        ])
+
+    buttons.append([
+        InlineKeyboardButton("⬅️ Back to Panel", callback_data="admin_back")
+    ])
+
+    return InlineKeyboardMarkup(buttons)
