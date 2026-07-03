@@ -294,7 +294,10 @@ def remove_ib(username):
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute("UPDATE ibs SET active = 0 WHERE username = ?", (username,))
+    cursor.execute(
+        "DELETE FROM ibs WHERE username = ?",
+        (username,)
+    )
 
     conn.commit()
     conn.close()
