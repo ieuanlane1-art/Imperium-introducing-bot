@@ -20,9 +20,9 @@ from database import (
     get_leads_by_ib,
     get_clicked_leads,
     get_dashboard_stats,
+    get_latest_lead_by_telegram_id,
     set_setting,
     get_setting,
-    get_latest_lead_by_telegram_id,
 )
 from keyboards import (
     start_journey_keyboard,
@@ -161,6 +161,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if data == "promo_start":
         user = query.from_user
+
         existing_lead = get_latest_lead_by_telegram_id(user.id)
 
         if existing_lead:
@@ -172,10 +173,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     "Your dedicated account manager is:\n\n"
                     f"@{assigned_ib_username}\n\n"
                     "Tap below to continue your setup."
-                 ),
-                 reply_markup=open_ib_chat_keyboard(assigned_ib_username),
-             )
-             return
+                ),
+                reply_markup=open_ib_chat_keyboard(assigned_ib_username),
+            )
+            return
+
         ib = assign_next_ib()
 
         lead_id = create_lead(
