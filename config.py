@@ -37,4 +37,5 @@ PREFILLED_MESSAGE = (
 
 ADMIN_USER_IDS = [
     8690177711,  # you
+    8705428785,  # bevs
 ]
