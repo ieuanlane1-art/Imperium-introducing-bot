@@ -23,6 +23,7 @@ from database import (
     get_latest_lead_by_telegram_id,
     set_setting,
     get_setting,
+    get_active_ibs,
 )
 from keyboards import (
     start_journey_keyboard,
@@ -395,3 +396,17 @@ async def panel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"{TRIDENT} Imperium Admin Panel\n\nChoose an option below:",
         reply_markup=admin_panel_keyboard(),
     )
+
+async def listibs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    ibs = get_active_ibs()
+
+    if not ibs:
+        await update.message.reply_text("No active IBs found.")
+        return
+
+    message = f"{TRIDENT} Active IB Rotation\n\n"
+
+    for index, ib in enumerate(ibs, start=1):
+        message += f"{index}. {ib['name']} — @{ib['username']}\n"
+
+    await update.message.reply_text(message)
