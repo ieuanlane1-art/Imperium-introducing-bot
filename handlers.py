@@ -442,7 +442,9 @@ async def addib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def removeib_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(context.args) < 1:
-        await update.message.reply_text("Usage: /removeib @username")
+        await update.message.reply_text(
+            "Usage: /removeib @username"
+        )
         return
 
     username = context.args[0].replace("@", "")
