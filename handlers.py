@@ -240,6 +240,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await query.edit_message_text(message)
         return
+        
+    if data == "admin_dashboard":
+        await query.edit_message_text(
+            build_dashboard_text(),
+            reply_markup=admin_panel_keyboard(),
+        )
+        return
     if data == "promo_start":
         user = query.from_user
 
