@@ -106,7 +106,7 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
 
 async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.id != FREE_GROUP_CHAT_ID:
-    return
+        return
     if not update.message or not update.message.new_chat_members:
         return
 
