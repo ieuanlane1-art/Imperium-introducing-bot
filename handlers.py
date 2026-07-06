@@ -10,6 +10,7 @@ from config import (
     IB_NOTIFY_CHAT_ID,
     IB_NOTIFY_TOPIC_ID,
     PROMO_TARGET_CHAT_ID,
+    FREE_GROUP_CHAT_ID,
 )
 from database import (
     create_lead,
@@ -104,6 +105,8 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def welcome_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_chat.id != FREE_GROUP_CHAT_ID:
+    return
     if not update.message or not update.message.new_chat_members:
         return
 
