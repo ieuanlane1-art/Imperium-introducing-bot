@@ -22,8 +22,9 @@ def assign_next_ib():
 
     current_index = int(get_setting("next_ib_index", "0"))
 
+    # Only reset if the saved index is too high after removing IBs
     if current_index >= len(ibs):
-        current_index = 0
+        current_index = len(ibs) - 1
 
     ib = ibs[current_index]
 
