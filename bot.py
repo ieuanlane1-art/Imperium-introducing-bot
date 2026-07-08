@@ -42,6 +42,11 @@ def main():
     ensure_default_ibs()
 
     app = Application.builder().token(BOT_TOKEN).build()
+    app.job_queue.run_repeating(
+        auto_promo_post,
+        interval=43200,
+        first=43200,
+    )
 
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("panel", panel_command))
