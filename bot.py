@@ -23,6 +23,7 @@ from handlers import (
     addib_command,
     removeib_command,
     text_handler,
+    auto_promo_post,
 )
 
 
