@@ -14,7 +14,6 @@ from handlers import (
     start_command,
     help_command,
     chatid_command,
-    stats_command,
     welcome_new_member,
     button_handler,
     dashboard_command,
