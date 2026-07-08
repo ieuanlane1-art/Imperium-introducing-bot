@@ -59,7 +59,6 @@ def main():
     app.add_handler(CommandHandler("addib", addib_command))
     app.add_handler(CommandHandler("removeib", removeib_command))
     app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("stats", stats_command))
     app.add_handler(CommandHandler("dashboard", dashboard_command))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_handler))
     app.add_handler(
