@@ -41,11 +41,16 @@ def main():
     from lead_manager import ensure_default_ibs
     ensure_default_ibs()
 
-    app = Application.builder().token(BOT_TOKEN).build()
-    app.job_queue.run_repeating(
+    from datetime import time
+
+    app.job_queue.run_daily(
         auto_promo_post,
-        interval=43200,
-        first=43200,
+        time=time(hour=8, minute=0),
+    )
+    
+    app.job_queue.run_daily(
+        auto_promo_post,
+        time=time(hour=20, minute=0),
     )
 
     app.add_handler(CommandHandler("start", start_command))
