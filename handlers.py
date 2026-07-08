@@ -556,3 +556,14 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=admin_panel_keyboard()
         )
         return
+        
+async def auto_promo_post(context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=PROMO_TARGET_CHAT_ID,
+        text=(
+            f"{TRIDENT} Our trader is monitoring the markets.\n\n"
+            "Don’t miss the next move.\n\n"
+            "Click below to get started."
+        ),
+        reply_markup=promo_start_keyboard(),
+    )
