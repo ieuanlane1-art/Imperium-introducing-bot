@@ -35,7 +35,6 @@ def admin_panel_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("📣 Post Get Started", callback_data="admin_promo")],
         [InlineKeyboardButton("📊 Dashboard", callback_data="admin_dashboard")],
-        [InlineKeyboardButton("📈 Stats", callback_data="stats")],
         [InlineKeyboardButton("👥 List IBs", callback_data="listibs")],
         [InlineKeyboardButton("Add IB", callback_data="admin_addib")],
         [InlineKeyboardButton("Remove IB", callback_data="admin_removeib")],
