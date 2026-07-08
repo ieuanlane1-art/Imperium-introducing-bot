@@ -43,6 +43,7 @@ def main():
 
     from datetime import time
 
+    app = Application.builder().token(BOT_TOKEN).build()
     app.job_queue.run_daily(
         auto_promo_post,
         time=time(hour=8, minute=0),
